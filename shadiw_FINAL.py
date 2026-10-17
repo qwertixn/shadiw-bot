@@ -2068,7 +2068,7 @@ def build_full_report(query, local_rows, bb_data, leak_data, hr_data, user_id=No
     emoji_tier = {"VIP": "👑", "Premium": "💎", "Base": "🔷", "Free": "🆓"}.get(tier, "🆓")
     L.append("")
     L.append("╔══════════════════════════════╗")
-    L.append(f"║ 🔍 ОТЧЁТ: {html.escape(str(query)[:15].replace("<", "").replace(">", ""))}")
+    L.append(f"║ 🔍 ОТЧЁТ: {html.escape(str(query)[:15]).replace(chr(60), chr(32)).replace(chr(62), chr(32))}")
     L.append(f"║ Тариф: {emoji_tier} {tier}")
     L.append("╚══════════════════════════════╝")
 
