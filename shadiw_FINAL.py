@@ -110,7 +110,7 @@ def save_leaks_to_file(email, leak_data):
     from datetime import datetime
     safe = email.replace("@", "_at_").replace(".", "_")
     filename = f"leaks_{safe}_{int(datetime.now().timestamp())}.txt"
-    paths = ["/storage/emulated/0/Download/", "/storage/emulated/0/Documents/", os.path.expanduser("~") + "/", "./"]
+    paths = ["os.path.join(DATA_DIR, '') + '/", "/storage/emulated/0/Documents/", os.path.expanduser("~") + "/", "./"]
     L = []
     L.append("=" * 60)
     L.append(f"УТЕЧКИ LEAKCHECK: {email}")
@@ -8883,7 +8883,7 @@ async def admin_bases_stats(message: types.Message):
 
     # bases_70m
     try:
-        conn = sqlite3.connect("file:/storage/emulated/0/Download/osint_bases/bases_70m.db?mode=ro", uri=True)
+        conn = sqlite3.connect(f"file:{os.path.join(BASES_DIR, 'bases_70m.db')}?mode=ro", uri=True)
         cur = conn.cursor()
         n = cur.execute("SELECT COUNT(*) FROM r").fetchone()[0]
         conn.close()
@@ -8893,7 +8893,7 @@ async def admin_bases_stats(message: types.Message):
 
     # bases.db
     try:
-        conn = sqlite3.connect("file:/storage/emulated/0/Download/bases.db?mode=ro", uri=True)
+        conn = sqlite3.connect(f"file:{BASES_DB_PATH}?mode=ro", uri=True)
         cur = conn.cursor()
         n = cur.execute("SELECT COUNT(*) FROM r").fetchone()[0]
         conn.close()
