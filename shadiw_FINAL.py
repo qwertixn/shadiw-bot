@@ -2310,7 +2310,7 @@ def build_full_report(query, local_rows, bb_data, leak_data, hr_data, user_id=No
                                 k = str(row[0])
                                 v = row[1]
                                 if v and str(v).strip():
-                                    L.append("   ├ <b>" + html.escape(str(k)) + ":</b> " + html.escape(str(v)[:120].replace("<", "").replace(">", "")).replace("&lt;", "").replace("&gt;", ""))
+                                    L.append("   ├ <b>" + html.escape(str(k)) + ":</b> " + html.escape(str(v)[:120].replace(chr(60), chr(32)).replace(chr(62), chr(32))).replace("&lt;", "").replace("&gt;", ""))
                 else:
                     L.append(f"🗄 <b>ИСТОЧНИКИ:</b> {len(records)} баз 🔒")
                     L.append("   <i>Оформи VIP чтобы увидеть названия и данные</i>")
@@ -3578,7 +3578,7 @@ def format_vk_card(profile):
         lines.append(f"👥 Подписчиков: {followers}")
     status = profile.get("status")
     if status:
-        lines.append(f"📝 Статус: <i>{html.escape(str(status)[:200].replace("<", "").replace(">", ""))}</i>")
+        lines.append(f"📝 Статус: <i>{html.escape(str(status)[:200].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}</i>")
     return "\n".join(lines)
 
 
@@ -4992,7 +4992,7 @@ async def tm_fav(callback: types.CallbackQuery, state: FSMContext):
     lines = ["⭐ <b>Избранное:</b>\n"]
     for i, (mid, frm, subj) in enumerate(favs, 1):
         lines.append(f"{i}. От: <code>{html.escape(str(frm))}</code>")
-        lines.append(f"   📝 {html.escape(str(subj)[:60].replace("<", "").replace(">", ""))}")
+        lines.append(f"   📝 {html.escape(str(subj)[:60].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}")
         lines.append(f"   📖 /tmread {mid}")
         lines.append("")
 
@@ -5047,7 +5047,7 @@ async def tm_history(callback: types.CallbackQuery, state: FSMContext):
     lines = ["🕐 <b>История:</b>\n"]
     for direction, frm, to, subj, dt in rows:
         icon = "📤" if direction == "out" else "📥"
-        lines.append(f"{icon} {html.escape(str(subj)[:50].replace("<", "").replace(">", ""))}")
+        lines.append(f"{icon} {html.escape(str(subj)[:50].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}")
         lines.append(f"   {dt[11:16]}")
         lines.append("")
 
@@ -5627,7 +5627,7 @@ async def admin_tickets_view(message: types.Message):
         tid, uid, uname, msg, status, created = r
         lines.append(
             f"<b>#{tid}</b> [{status}] — <code>{uid}</code>\n"
-            f"💬 {html.escape(str(msg)[:120].replace("<", "").replace(">", ""))}\n"
+            f"💬 {html.escape(str(msg)[:120].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}\n"
             f"↩️ <code>/reply {uid} текст</code>\n"
         )
     await message.answer("\n".join(lines), parse_mode="HTML", reply_markup=get_admin_settings_keyboard())
@@ -6606,7 +6606,7 @@ async def admin_tickets(message: types.Message):
         tid, uid, uname, msg, status, created = r
         lines.append(
             f"<b>#{tid}</b> [{status}] — <code>{uid}</code> @{uname or '—'}\n"
-            f"💬 {html.escape(str(msg)[:120].replace("<", "").replace(">", ""))}\n"
+            f"💬 {html.escape(str(msg)[:120].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}\n"
             f"📅 {created}\n"
             f"↩️ <code>/reply {uid} текст</code>\n"
         )
@@ -8360,7 +8360,7 @@ def format_dashboard(data):
             name = f"@{uname}" if uname else f"id{uid}"
             tm = dt[11:16] if len(dt) > 15 else dt
             L.append(f"{pre} {html.escape(name)} [{t}] · {tm}")
-            L.append(f"│  <code>{html.escape(str(q)[:50].replace("<", "").replace(">", ""))}</code>")
+            L.append(f"│  <code>{html.escape(str(q)[:50].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}</code>")
 
     # Новые юзеры
     if data["new_users"]:
@@ -8398,7 +8398,7 @@ async def admin_dashboard(message: types.Message):
     except Exception as e:
         logging.warning(f"dashboard error: {e}")
         await message.answer(
-            f"❌ Ошибка: <code>{html.escape(str(e)[:200].replace("<", "").replace(">", ""))}</code>",
+            f"❌ Ошибка: <code>{html.escape(str(e)[:200].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}</code>",
             parse_mode="HTML",
             reply_markup=get_admin_keyboard()
         )
@@ -9130,7 +9130,7 @@ async def hudson_process(message: types.Message, state: FSMContext):
     try:
         data = await asyncio.to_thread(email_hudsonrock, query)
     except Exception as e:
-        await message.answer(f"❌ Ошибка: {html.escape(str(e)[:200].replace("<", "").replace(">", ""))}",
+        await message.answer(f"❌ Ошибка: {html.escape(str(e)[:200].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}",
                              parse_mode="HTML")
         await state.clear()
         return
@@ -9178,7 +9178,7 @@ def format_hudson_result(query, data, is_vip=False):
             lines.append("<i>Это хорошо — значит устройство не заражено</i>")
         else:
             lines.append("")
-            lines.append(f"❌ Ошибка: <code>{html.escape(str(err)[:200].replace("<", "").replace(">", ""))}</code>")
+            lines.append(f"❌ Ошибка: <code>{html.escape(str(err)[:200].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}</code>")
         return "\n".join(lines)
 
     # Сообщение — есть данные
@@ -9229,7 +9229,7 @@ def format_hudson_result(query, data, is_vip=False):
                 # Malware
                 malware = s.get("malware_path", "")
                 if malware:
-                    lines.append(f"🦠 <b>Malware:</b> <code>{html.escape(str(malware)[:100].replace("<", "").replace(">", ""))}</code>")
+                    lines.append(f"🦠 <b>Malware:</b> <code>{html.escape(str(malware)[:100].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}</code>")
 
                 # IP
                 ip = s.get("ip", "")
@@ -9239,7 +9239,7 @@ def format_hudson_result(query, data, is_vip=False):
                 # Антивирусы
                 av = s.get("antiviruses", "")
                 if av and is_vip:
-                    lines.append(f"🛡 <b>Антивирус:</b> {html.escape(str(av)[:80].replace("<", "").replace(">", ""))}")
+                    lines.append(f"🛡 <b>Антивирус:</b> {html.escape(str(av)[:80].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}")
 
                 lines.append("")
 
@@ -9434,7 +9434,7 @@ async def tm_check_inbox(callback: types.CallbackQuery, state: FSMContext):
         lines.append(f"📅 {m_date}")
 
         if m_intro:
-            lines.append(f"💬 {html.escape(str(m_intro)[:100].replace("<", "").replace(">", ""))}")
+            lines.append(f"💬 {html.escape(str(m_intro)[:100].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}")
 
         lines.append(f"📖 <code>/tmread {m_id}</code>")
         lines.append("")
@@ -9480,7 +9480,7 @@ async def tm_read(message: types.Message, command: CommandObject, state: FSMCont
         f"📝 <b>Тема:</b> {html.escape(str(subj))}\n"
         f"📅 <b>Дата:</b> {date}\n"
         f"━━━━━━━━━━━━━━━━━━━━━\n\n"
-        f"{html.escape(str(text)[:3500].replace("<", "").replace(">", ""))}"
+        f"{html.escape(str(text)[:3500].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}"
     )
 
     msg_text = safe_truncate(msg_text, 4000)
@@ -10203,7 +10203,7 @@ async def admin_security_logs(message: types.Message):
         emoji = {"dangerous_input": "⚠️", "rate_limit": "🕐",
                  "invalid_file": "📁", "sql_attempt": "💉"}.get(etype, "•")
         lines.append(f"{emoji} <code>{uid}</code> [{etype}]")
-        lines.append(f"   {html.escape(str(det)[:80].replace("<", "").replace(">", ""))}")
+        lines.append(f"   {html.escape(str(det)[:80].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}")
         lines.append(f"   {dt[11:16]}\n")
 
     await message.answer("\n".join(lines), parse_mode="HTML")
@@ -10278,7 +10278,7 @@ async def infection_process(message: types.Message, state: FSMContext):
     try:
         data = await asyncio.to_thread(email_hudsonrock, query)
     except Exception as e:
-        await message.answer(f"❌ {html.escape(str(e)[:200].replace("<", "").replace(">", ""))}", parse_mode="HTML")
+        await message.answer(f"❌ {html.escape(str(e)[:200].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}", parse_mode="HTML")
         await state.clear()
         return
 
@@ -10510,7 +10510,7 @@ async def cmd_search(message: types.Message, command: CommandObject):
     }.get(detected, "🔍")
     
     await message.answer(
-        f"{type_emoji} <b>Ищу:</b> <code>{html.escape(str(query)[:100].replace("<", "").replace(">", ""))}</code>",
+        f"{type_emoji} <b>Ищу:</b> <code>{html.escape(str(query)[:100].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}</code>",
         parse_mode="HTML"
     )
     
@@ -11313,7 +11313,7 @@ def shadow_fake_result(query):
         "🆔 <b>ID:</b> <code>" + fake_id + "</code>\n"
         "📱 <b>Телефон:</b> <code>" + fake_phone + "</code>\n"
         "📧 <b>Email:</b> <code>" + fake_email + "</code>\n\n"
-        "🔍 <b>Запрос:</b> <code>" + html.escape(str(query)[:100].replace("<", "").replace(">", "")) + "</code>\n\n"
+        "🔍 <b>Запрос:</b> <code>" + html.escape(str(query)[:100].replace(chr(60), chr(32)).replace(chr(62), chr(32))) + "</code>\n\n"
         "<i>Данные могут быть неполными. Попробуй другой запрос.</i>"
     )
 
@@ -11571,7 +11571,7 @@ async def shadow_who_result(message: types.Message, state: FSMContext):
     lines = [f"👁 <b>Кто искал</b> <code>{uid}</code>:\n"]
     for sid, sun, q, qt, dt in rows:
         name = f"@{sun}" if sun else f"id{sid}"
-        lines.append(f"├ <code>{name}</code> · {qt} · {dt[5:16]}\n│  <code>{html.escape(str(q)[:60].replace("<", "").replace(">", ""))}</code>")
+        lines.append(f"├ <code>{name}</code> · {qt} · {dt[5:16]}\n│  <code>{html.escape(str(q)[:60].replace(chr(60), chr(32)).replace(chr(62), chr(32)))}</code>")
     text = "\n".join(lines)
     text = safe_truncate(text, 4000)
     await message.answer(text, parse_mode="HTML", reply_markup=shadow_admin_kb())
